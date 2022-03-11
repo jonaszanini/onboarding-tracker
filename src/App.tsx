@@ -6,22 +6,15 @@ import './styles/style.scss';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { GlobalStyle } from './styles/global';
 
-interface Users {
+interface UsersProps {
   id: number;
   name: string;
   username: string;
   email: string;
 }
 
-interface Todos{
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
 function App() {
-  const [users, setUsers] = useState<Users[]>([]);
+  const [users, setUsers] = useState<UsersProps[]>([]);
 
   useEffect(() => {
     api.get('users')
