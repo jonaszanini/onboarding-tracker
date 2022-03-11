@@ -1,24 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import { useEffect, useState } from 'react';
+import { Users } from './components/Users';
+import { api } from './services/api';
+import './styles/style.scss';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { GlobalStyle } from './styles/global';
+
+interface Users {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+}
+
+interface Todos{
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 function App() {
+  const [users, setUsers] = useState<Users[]>([]);
+
+  useEffect(() => {
+    api.get('users')
+      .then(response => setUsers(response.data))
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className='title'>
+        <h1>Onboarding Tracker</h1>
+      </div>
+      <Router>
+        <Routes>
+          <Route path='/' element={<Users userList={users} />} />
+          <Route path='users' element={<Users userList={users} />}/>
+            <Route path='users/:id/*' element={<Users userList={users} />} />
+        </Routes>
+      </Router>
+      <GlobalStyle />
     </div>
   );
 }
